@@ -16,7 +16,7 @@ put(TableName, #{uuid := Uuid} = Data) ->
     Error -> Error
   end;
 put(TableName, Data) when is_map(Data) ->
-  Query = kass_utils:put_query(TableName, Data#{uuid => UUID}),
+  Query = kass_utils:put_query(TableName, Data),
   kass_cassandra:query(Query).
 
 get(TableName) ->
