@@ -3,7 +3,7 @@
 
 -export([put/2
          ,get/1
-         % ,get/1
+          ,get/2
          % ,update/2
          % ,delete/2]
         ]).
@@ -24,6 +24,8 @@ get(TableName) ->
   Query = "SELECT * FROM " ++ TableNameStr ++ ";",
   kass_utils:kass_get(kass_cassandra:query(Query)).
 
-% get(TableName, Key) ->
-%     Query = "SELECT * FROM " ++ TableName ++ " WHERE key = '" ++ Key ++ "';",
-%     kass_cassandra:query(Query).
+get(TableName, Map) when is_map(Map) ->
+  TableNameStr= kass_utils:to(list, TableName),
+  FilterQuery = kass_utils:get_query(Map),
+  Query = "SELECT * FROM " ++ TableNameStr ++ " " ++ FilterQuery,
+  kass_utils:kass_get(kass_cassandra:query(Query)).
