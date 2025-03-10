@@ -203,6 +203,6 @@ server_name(Other) ->
   Other.
 
 execute_query(#{client := Client, connection := up}, Query) ->
-  cqerl:run_query(Client, Query);
+  cqerl:run_query(Client, kass_utils:to(list, Query));
 execute_query(_, _) ->
   {error, <<"no cs node found">>}.

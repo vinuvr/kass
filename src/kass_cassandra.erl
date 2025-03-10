@@ -150,7 +150,7 @@ code_change(_OldVsn, State, _Extra) ->
 execute_query(Query) ->
   case kass_if_cassandra_nodes:get_random_active_node() of
     {ok, CSNode} ->
-      lager:info("cassandra node is ~p",[CSNode]),
+      %lager:info("cassandra node is ~p",[CSNode]),
       kass_if_cassandra_node:query(CSNode, Query);
     {error,<<"None of cassandra are connected">>} = Res ->
       lager:info("no cassandra nodes connected"),

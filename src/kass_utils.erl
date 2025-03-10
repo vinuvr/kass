@@ -63,8 +63,19 @@
          hrm_api/3,
          kass_get/1,
          filtered_map/1,
-         remove_non_ascii/1
+         remove_non_ascii/1,
+         conversation_id/2
         ]).
+
+
+conversation_id(To, From) ->
+  S = lists:sort([To, From]),
+  Hash = crypto:hash(sha256, io_lib:format("~p-~p", S)),
+  <<A:32, B:16, C:16, D:16, E:48>> = binary:part(Hash, 0, 16),
+  C1 = (C band 16#0FFF) bor (5 bsl 12),   % Apply version 5
+  D1 = (D band 16#3FFF) bor (2 bsl 14),   % Apply variant
+  UUID = <<A:32, B:16, C1:16, D1:16, E:48>>,
+  list_to_binary(uuid:uuid_to_string(UUID)).
 
 uri_encode(Name) ->
   uri_string:quote(Name).
