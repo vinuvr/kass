@@ -65,8 +65,8 @@
          filtered_map/1,
          remove_non_ascii/1,
          conversation_id/2,
-         get_query/1
-        ]).
+         get_query/1,
+         year_month/1        ]).
 
 
 conversation_id(To, From) ->
@@ -77,6 +77,14 @@ conversation_id(To, From) ->
   D1 = (D band 16#3FFF) bor (2 bsl 14),   % Apply variant
   UUID = <<A:32, B:16, C1:16, D1:16, E:48>>,
   list_to_binary(uuid:uuid_to_string(UUID)).
+
+year_month(Actime) ->
+  %{{Y, M, _}, _} = calendar:gregorian_days_to_date(Actime),
+  {{Y, M,_ }, _} = calendar:system_time_to_universal_time(Actime, millisecond),
+  case M < 10 of
+    true -> kass_utils:to(list, Y) ++ "0" ++ kass_utils:to(list, M);
+    _ -> kass_utils:to(list, Y) ++ kass_utils:to(list, M)
+  end.
 
 uri_encode(Name) ->
   uri_string:quote(Name).
