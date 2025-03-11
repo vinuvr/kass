@@ -213,16 +213,16 @@ do_start_migration(Args) ->
              ),
         lager:info("pppppppppppppppppppppppgoting to create recent chat map"),
         spawn(fun() ->
-          RecentChatMap1 = kass_utils:filtered_map(
+          % RecentChatMap1 = kass_utils:filtered_map(
             
-            #{tenant_id => Tenant,
-              user_id => From,
-              peer_id => To,
-              last_message_id => Uuid,
-              conversation_id => CID,
-              a_ctime => Actime,
-              %unread_count => ,
-              is_group => Group}),
+          %   #{tenant_id => Tenant,
+          %     user_id => From,
+          %     peer_id => To,
+          %     last_message_id => Uuid,
+          %     conversation_id => CID,
+          %     a_ctime => Actime,
+          %     %unread_count => ,
+          %     is_group => Group}),
   
           RecentChatMap2 = kass_utils:filtered_map(
              #{tenant_id => Tenant,
@@ -235,7 +235,7 @@ do_start_migration(Args) ->
                uuid => Uuid,
                is_group => Group}),
 
-          add_recent_chat(RecentChatMap1),
+          %add_recent_chat(RecentChatMap1),
           add_recent_chat_counter(#{tenant_id => Tenant
                                     ,conversation_id => CID
                                     ,user_id => From}, IsSeen),
